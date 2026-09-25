@@ -70,3 +70,10 @@ class Fighter:
 
         msg = f"{self.name} healed for {heal_amount} HP!"
         return True, msg
+
+def finish_him(self, target):
+    """Special finishing move when opponent is exhausted."""
+    damage = 100  # Guaranteed damage to finish off
+    target.take_damage(damage)
+    msg = f"{self.name} FINISHES {target.name} WITH {damage} DAMAGE!"
+    return True, msg

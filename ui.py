@@ -17,7 +17,7 @@ AVATARS = {
         "     &&>. <&    ",
         "  -e&&&&JG&&&_  ",
         " &&&&&&&&C&v&&& ",
-        " &&&&&&&&&&&&&& ",
+        " &&&&&&&&&&&&&&&",
         "  #%& 7&&&&&& #f",
         "   s3  &&&&&& #f",
         "    f  #.4ykk  %",
@@ -31,7 +31,7 @@ AVATARS = {
         "    &> .<&&     ",
         "  _&&&GJ&&&&e-  ",
         " &&&v&C&&&&&&&& ",
-        " &&&&&&&&&&&&&& ",
+        "&&&&&&&&&&&&&&& ",
         "f# &&&&&&7 &#%  ",
         "f# &&&&&&  3s   ",
         "%  kkX$&#  f    ",
@@ -61,8 +61,8 @@ def draw_battle_screen(p1, p2, combat_log="", lines_to_overwrite=0):
     # 2. Prepare Health and Stamina Bars
     p1_hp_bar = build_bar(p1.hp, p1.max_hp, length=12, fill_color=GREEN)
     p2_hp_bar = build_bar(p2.hp, p2.max_hp, length=12, fill_color=GREEN)
-    p1_st_bar = build_bar(p1.stamina, 50, length=12, fill_color=CYAN)
-    p2_st_bar = build_bar(p2.stamina, 50, length=12, fill_color=CYAN)
+    p1_st_bar = build_bar(p1.stamina, 100, length=12, fill_color=CYAN)
+    p2_st_bar = build_bar(p2.stamina, 100, length=12, fill_color=CYAN)
 
     # 3. Assemble full frame (Line-by-Line)
     lines = []
@@ -93,6 +93,6 @@ def draw_battle_screen(p1, p2, combat_log="", lines_to_overwrite=0):
 
 def animate_attack(attacker_name):
     """Flashes action text briefly for visual impact."""
-    sys.stdout.write(f"\r{RED}>>> {attacker_name} executes move! <<<{RESET}")
+    sys.stdout.write(f"\r{GREEN}>>> {attacker_name} executes move! <<<{RESET}")
     sys.stdout.flush()
     time.sleep(1)

@@ -45,5 +45,9 @@ def main():
         # 4. Play turn and receive the exact combat_log string returned from game.py
         success, combat_log = game.play_turn(choice)
 
+        if game.current_player.stamina <= 0:
+            # If the current player is exhausted, we need to switch turns and allow the opponent to finish them
+            game.switch_turns()
+
 if __name__ == "__main__":
     main()
