@@ -20,9 +20,15 @@ class GameSession:
             self.opponent = self.player2
 
     def play_turn(self, choice):
-        # Store opponent HP before attack to measure normal damage
-        pre_attack_hp = self.opponent.hp
+        # 1. GUARANTEED FINISH HIM: If opponent is exhausted, ANY attack choice automatically executes them!
+        if self.opponent_exhausted and choice in ["1", "2"]:
+            self.opponent.hp = 0
+            self.opponent_exhausted = False
+            
+            msg = f"FINISH HIM! {self.current_player.name} landed a FINISHER on {self.opponent.name}!"
+            return True, msg
 
+        # 2. Normal move logic when not in a finisher state
         if choice == "1":
             success, msg = self.current_player.normal_attack(self.opponent)
         elif choice == "2":
@@ -32,24 +38,18 @@ class GameSession:
         else:
             return False, "Invalid choice! Please select 1, 2, or 3."
 
+        # 3. Check if the player who just acted ran out of stamina
         if success:
-            # If the opponent was exhausted and an attack hit, boost the damage to 100
-            if self.opponent_exhausted and choice in ["1", "2"] and self.opponent.hp < pre_attack_hp:
-                self.opponent.hp = 0  # 100 damage instantly finishes them
-                msg = f"FINISH HIM! {self.current_player.name} landed a lethal 100 DMG blow!"
-                self.opponent_exhausted = False  # Reset flag
-
-            # Check if the player who just acted ran out of stamina
             if self.current_player.stamina <= 0:
                 exhausted_name = self.current_player.name
                 
-                # Switch turn so opponent can finish them
+                # Switch turn so the opponent gets the guaranteed strike
                 self.switch_turns()
                 
                 self.current_player.stamina = 100  # Give attacker full stamina
-                self.opponent_exhausted = True     # Mark opponent as vulnerable
+                self.opponent_exhausted = True     # Mark opponent as defenseless
                 
-                msg = f"{exhausted_name} is completely exhausted! FINISH HIM!"
+                msg = f"{exhausted_name} is exhausted! FINISH HIM!"
             else:
                 self.switch_turns()
 

@@ -1,7 +1,9 @@
+import os
 from game import GameSession
 from ui import draw_battle_screen, animate_attack
 
 def main():
+    os.system("")  # Enable ANSI escape sequences on Windows terminals
     print("Welcome to the CLI War Game!")
     p1_name = input("Enter name for Player 1: ")
     p2_name = input("Enter name for Player 2: ")
@@ -18,6 +20,7 @@ def main():
             game.player1, 
             game.player2, 
             combat_log, 
+            current_player_name=game.current_player.name,
             lines_to_overwrite=rendered_lines
         )
 
@@ -27,27 +30,19 @@ def main():
             print(f"\n{winner.name} DEFEATED {game.opponent.name}! {winner.name} WINS!")
             break
 
-        # 3. Action Menu (Printed cleanly below the UI block - exactly 5 lines printed)
-        print(f"\n{game.current_player.name}'s turn! Choose action:")
-        print("1. Normal Attack (Cost: 5 Stamina)")
-        print("2. Critical Attack (Cost: 15 Stamina)")
-        print("3. Heal (Cost: 20 Stamina)")
+        # --- THIS IS WHERE THE CODE BLOCK GOES ---
 
-        choice = input("Enter your choice (1, 2, or 3): ")
+        # 3. Action Prompt (1 line directly below the bottom box border)
+        choice = input("Enter choice (1, 2, or 3) > ")
 
-        # Calculate TOTAL lines printed in this frame cycle
-        # ui_height + 5 lines (blank line + header + 3 options + input line)
-        rendered_lines = ui_height + 5
-
-        # Optional animation cue
+        # Optional animation cue (clears itself automatically now)
         animate_attack(game.current_player.name)
 
-        # 4. Play turn and receive the exact combat_log string returned from game.py
+        # 4. Play turn and receive the combat log
         success, combat_log = game.play_turn(choice)
 
-        if game.current_player.stamina <= 0:
-            # If the current player is exhausted, we need to switch turns and allow the opponent to finish them
-            game.switch_turns()
+        # Exact lines to move up on next pass: ui_height + 1 input line
+        rendered_lines = ui_height + 1
 
 if __name__ == "__main__":
     main()
